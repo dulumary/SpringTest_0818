@@ -15,6 +15,10 @@ public interface RealEstateRepository {
 	
 	// 전달받은 월세보다 낮은 매물 정보 행들을 돌려주는 기능
 	public List<RealEstate> selectRealEstateByRentPrice(@Param("rentPrice") int rentPrice);
-	
+
+	// 가격 넓이 조건때 맞는 매물 정보 행을 돌려주는 기능
+	public List<RealEstate> selectRealEstateByAreaAndPrice(
+			@Param("area") int area
+			, @Param("price") int price);
 
 }
