@@ -60,6 +60,21 @@ public class RealEstateService {
 		
 	}
 	
+	// 전달받은 id 와 일치하는 매물 정보를 전달 받은 type과 price로 수정한다. 
+	public int updateRealEstate(int id, String type, int price) {
+		int count = realEstateRepository.updateRealEstate(id, type, price);
+		
+		return count;
+		
+	}
+	
+	public int deleteRealEstate(int id) {
+		
+		int count = realEstateRepository.deleteRealEstate(id);
+		
+		return count;
+		
+	}
 	
 
 }
