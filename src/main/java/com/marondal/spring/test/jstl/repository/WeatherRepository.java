@@ -20,4 +20,6 @@ public interface WeatherRepository {
 			, @Param("precipitation") double precipitation
 			, @Param("microDust") String microDust
 			, @Param("windSpeed") double windSpeed);
+	
+	public int insertWeatherByObject(Weather weather);
 }
