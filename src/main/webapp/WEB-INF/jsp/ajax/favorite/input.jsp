@@ -17,7 +17,12 @@
 		<label>제목</label>
 		<input type="text" class="form-control" id="titleInput">
 		<label class="mt-3">주소</label>
-		<input type="text" class="form-control" id="addressInput">
+		<div class="d-flex">
+			<input type="text" class="form-control" id="addressInput">
+			<button type="button" class="btn btn-success" id="duplicateBtn">중복확인</button>
+		</div>
+		<div class="small text-success d-none" id="avaliableUrlText">저장 가능한 url 입니다.</div>
+		<div class="small text-danger d-none" id="duplicateUrlText">중복된 url 입니다.</div>
 		
 		<button type="button" class="btn btn-success btn-block mt-3" id="addBtn">추가</button>
 	</div>
@@ -28,6 +33,64 @@
 	 
 	 <script>
 	 	$(document).ready(function() {
+	 		
+	 		// 중복 체크 확인 
+	 		var isDuplicateCheck = false;
+	 		// 중복상태 
+	 		var isDuplicateUrl = true;
+	 		
+	 		$("#addressInput").on("input", function() {
+	 			// 중복체크 확인, 중복상태 변수값을 초기화 
+	 			isDuplicateCheck = false;
+	 			isDuplicateUrl = true;
+	 			$("#avaliableUrlText").addClass("d-none");
+	 			$("#duplicateUrlText").addClass("d-none");
+	 		});
+	 		
+	 		$("#duplicateBtn").on("click", function() {
+	 		
+	 			let address = $("#addressInput").val();
+	 		
+	 			if(address == "") {
+	 				alert("주소를 입력하세요");
+	 				return ;
+	 			}
+	 			
+	 			// 주소가 http://  https:// 로 시작하지 않으면
+	 			// 주소가 http:// 로 시작하지 않고 https:// 로도 시작하지 안으면 
+	 			if(!address.startsWith("http://") && !address.startsWith("https://")) {
+	 				alert("주소형식을 확인해 주세요");
+	 				return ;
+	 			}
+	 			
+	 			$.ajax({
+	 				type:"post"
+	 				, url:"/ajax/favorite/duplicate-url"
+	 				, data:{"url":address}
+	 				, success:function(data) {
+	 					isDuplicateCheck = true;
+	 					// 중복됨 {"isDuplicate":true}
+	 					// 중복 안됨 {"isDuplicate":false}
+	 					if(data.isDuplicate) {
+	 						isDuplicateUrl = true;
+	 						$("#duplicateUrlText").removeClass("d-none");
+	 						$("#avaliableUrlText").addClass("d-none");
+	 					} else {
+	 						isDuplicateUrl = false;
+	 						$("#avaliableUrlText").removeClass("d-none");
+	 						$("#duplicateUrlText").addClass("d-none");
+	 					}
+	 					
+	 					
+	 				}
+	 				, error:function() {
+	 					alert("중복확인 에러");
+	 				}
+	 			});
+	 			
+	 			
+	 		});
+	 		
 	 		
 	 		$("#addBtn").on("click", function() {
 	 			// 사용자가 입력한 사이트 이름, 주소를 얻어 와서
@@ -50,6 +113,18 @@
 	 			// 주소가 http:// 로 시작하지 않고 https:// 로도 시작하지 안으면 
 	 			if(!address.startsWith("http://") && !address.startsWith("https://")) {
 	 				alert("주소형식을 확인해 주세요");
+	 				return ;
+	 			}
+	 			
+	 			// 중복확인 안된 상태
+	 			if(!isDuplicateCheck) {
+	 				alert("url 중복체크를 해주세요");
+	 				return ;
+	 			}
+	 			
+	 			// 중복된 url 일때 
+	 			if(isDuplicateUrl) {
+	 				alert("중복된 url입니다");
 	 				return ;
 	 			}
 	 			
