@@ -116,14 +116,14 @@
    						  "updatedAt": "2023-07-25T07:14:34.000+00:00"
    						}  */
    						
-   						if(data == "") {
+   						if(data.result == "fail") {
    							alert("조회 결과가 없습니다.");
    						} else {
-   							alert("이름 : " + data.name + "\n"
-   	   								+ "날짜 : " + data.date.substring(0, 10) + "\n"
-   	   								+ "일수 : " + data.day + "\n"
-   	   								+ "인원 : " + data.headcount + "\n"
-   	   								+ "상태 : " + data.state);	
+   							alert("이름 : " + data.booking.name + "\n"
+   	   								+ "날짜 : " + data.booking.date.substring(0, 10) + "\n"
+   	   								+ "일수 : " + data.booking.day + "\n"
+   	   								+ "인원 : " + data.booking.headcount + "\n"
+   	   								+ "상태 : " + data.booking.state);	
    						}
    						
    						
